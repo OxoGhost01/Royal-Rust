@@ -1,0 +1,90 @@
+[{
+  "_id": {
+    "$oid": "678ede35e38b86e326b876ad"
+  },
+  "name": "Paladin",
+  "attack": 20,
+  "defense": 12,
+  "hp": 120
+},
+{
+  "_id": {
+    "$oid": "678ede35e38b86e326b876ae"
+  },
+  "name": "Chevalier",
+  "attack": 22,
+  "defense": 10,
+  "hp": 110
+},
+{
+  "_id": {
+    "$oid": "678ede35e38b86e326b876af"
+  },
+  "name": "Berserker",
+  "attack": 29,
+  "defense": 6,
+  "hp": 90
+},
+{
+  "_id": {
+    "$oid": "678ede35e38b86e326b876b0"
+  },
+  "name": "Archer",
+  "attack": 26,
+  "defense": 7,
+  "hp": 85
+},
+{
+  "_id": {
+    "$oid": "678ede35e38b86e326b876b1"
+  },
+  "name": "Sorcier",
+  "attack": 32,
+  "defense": 4,
+  "hp": 75
+},
+{
+  "_id": {
+    "$oid": "678ede35e38b86e326b876b2"
+  },
+  "name": "Guerrier",
+  "attack": 24,
+  "defense": 8,
+  "hp": 100
+},
+{
+  "_id": {
+    "$oid": "678ede35e38b86e326b876b3"
+  },
+  "name": "Moine",
+  "attack": 22,
+  "defense": 9,
+  "hp": 95
+},
+{
+  "_id": {
+    "$oid": "678ede35e38b86e326b876b4"
+  },
+  "name": "Voleur",
+  "attack": 28,
+  "defense": 5,
+  "hp": 80
+},
+{
+  "_id": {
+    "$oid": "678ede35e38b86e326b876b5"
+  },
+  "name": "Chasseur",
+  "attack": 23,
+  "defense": 8,
+  "hp": 90
+},
+{
+  "_id": {
+    "$oid": "678ede35e38b86e326b876b6"
+  },
+  "name": "Druide",
+  "attack": 21,
+  "defense": 9,
+  "hp": 100
+}]

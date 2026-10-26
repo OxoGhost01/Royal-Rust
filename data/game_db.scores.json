@@ -1,0 +1,56 @@
+[{
+  "_id": {
+    "$oid": "678fa3819c660c863a0ee737"
+  },
+  "player_name": "sdfgg",
+  "waves": 6
+},
+{
+  "_id": {
+    "$oid": "678fa8809c660c863a0ee738"
+  },
+  "player_name": "Try 2",
+  "waves": 9
+},
+{
+  "_id": {
+    "$oid": "678fac5e2bb38f7c5e141e96"
+  },
+  "player_name": "Try3",
+  "waves": 6
+},
+{
+  "_id": {
+    "$oid": "698607a006760d31f787cc4e"
+  },
+  "player_name": "rme",
+  "waves": 10
+},
+{
+  "_id": {
+    "$oid": "698af2f26640e3bb42f6cb8c"
+  },
+  "player_name": "dsfgddf",
+  "waves": 35
+},
+{
+  "_id": {
+    "$oid": "698b3387dac89d2e7e4f35f7"
+  },
+  "player_name": "rme",
+  "waves": 14
+},
+{
+  "_id": {
+    "$oid": "698f25ca98f02029a1c3dcdb"
+  },
+  "player_name": "rme",
+  "waves": 54
+},
+{
+  "_id": {
+    "$oid": "69ae8acbf7bf484a24a76521"
+  },
+  "player_name": "rme",
+  "waves": 51
+}]

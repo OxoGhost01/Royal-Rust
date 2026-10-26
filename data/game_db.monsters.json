@@ -1,0 +1,90 @@
+[{
+  "_id": {
+    "$oid": "678ede35e38b86e326b876b7"
+  },
+  "name": "Gobelin",
+  "attack": 10,
+  "defense": 6,
+  "hp": 150
+},
+{
+  "_id": {
+    "$oid": "678ede35e38b86e326b876b8"
+  },
+  "name": "Orc",
+  "attack": 10,
+  "defense": 8,
+  "hp": 180
+},
+{
+  "_id": {
+    "$oid": "678ede35e38b86e326b876b9"
+  },
+  "name": "Dragon",
+  "attack": 10,
+  "defense": 12,
+  "hp": 200
+},
+{
+  "_id": {
+    "$oid": "678ede35e38b86e326b876ba"
+  },
+  "name": "Zombie",
+  "attack": 10,
+  "defense": 7,
+  "hp": 160
+},
+{
+  "_id": {
+    "$oid": "678ede35e38b86e326b876bb"
+  },
+  "name": "Troll",
+  "attack": 10,
+  "defense": 10,
+  "hp": 190
+},
+{
+  "_id": {
+    "$oid": "678ede35e38b86e326b876bc"
+  },
+  "name": "Spectre",
+  "attack": 24,
+  "defense": 6,
+  "hp": 170
+},
+{
+  "_id": {
+    "$oid": "678ede35e38b86e326b876bd"
+  },
+  "name": "Golem",
+  "attack": 21,
+  "defense": 14,
+  "hp": 210
+},
+{
+  "_id": {
+    "$oid": "678ede35e38b86e326b876be"
+  },
+  "name": "Vampire",
+  "attack": 26,
+  "defense": 9,
+  "hp": 175
+},
+{
+  "_id": {
+    "$oid": "678ede35e38b86e326b876bf"
+  },
+  "name": "Loup-garou",
+  "attack": 24,
+  "defense": 8,
+  "hp": 185
+},
+{
+  "_id": {
+    "$oid": "678ede35e38b86e326b876c0"
+  },
+  "name": "Squelette",
+  "attack": 19,
+  "defense": 7,
+  "hp": 155
+}]
