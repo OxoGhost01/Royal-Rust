@@ -41,7 +41,11 @@
   "name": "Sorcieur",
   "attack": 32,
   "defense": 4,
-  "hp": 75
+  "hp": 75,
+  "type": "sorcerer",
+  "effect_chance": 0.3,
+  "effect_damage": 4,
+  "effect_duration": 3
 },
 {
   "_id": {
@@ -50,7 +54,11 @@
   "name": "Le mec avec un bouclier",
   "attack": 24,
   "defense": 8,
-  "hp": 100
+  "hp": 100,
+  "type": "tank",
+  "effect_chance": 0.25,
+  "effect_damage": 5,
+  "effect_duration": 2
 },
 {
   "_id": {
@@ -59,7 +67,11 @@
   "name": "Moineau",
   "attack": 22,
   "defense": 9,
-  "hp": 95
+  "hp": 95,
+  "type": "tank",
+  "effect_chance": 0.2,
+  "effect_damage": 6,
+  "effect_duration": 2
 },
 {
   "_id": {
@@ -86,5 +98,9 @@
   "name": "Benbi78",
   "attack": 21,
   "defense": 9,
-  "hp": 100
+  "hp": 100,
+  "type": "sorcerer",
+  "effect_chance": 0.25,
+  "effect_damage": 3,
+  "effect_duration": 3
 }]

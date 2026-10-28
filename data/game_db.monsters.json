@@ -2,7 +2,7 @@
   "_id": {
     "$oid": "678ede35e38b86e326b876b7"
   },
-  "name": "Loevan",
+  "name": "GOLDENBOY",
   "attack": 10,
   "defense": 6,
   "hp": 150
@@ -38,7 +38,7 @@
   "_id": {
     "$oid": "678ede35e38b86e326b876bb"
   },
-  "name": "Dyno",
+  "name": "Coubitic sauvage",
   "attack": 10,
   "defense": 10,
   "hp": 190
