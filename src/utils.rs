@@ -102,3 +102,20 @@ pub fn print_leaderboard(scores: &[ScoreEntry]) {
         println!("  {}. {:<20} {} waves", i + 1, score.player_name, score.waves);
     }
 }
+
+pub fn print_wave_info(wave_number: u32, monster: &Unit, team: &[Unit]) {
+    println!("\n-------- WAVE {wave_number} --------");
+    println!("A wild monster appears ! --- It is {monster}");
+    print_team(team);
+    println!();
+}
+
+pub fn print_log(log: &[String]) {
+    for line in log {
+        println!("{line}");
+    }
+}
+
+pub fn print_game_over(username: &str, waves: u32) {
+    println!("\nGAME OVER {username} ! You survived {waves} waves. (looser, HA)");
+}

@@ -76,7 +76,6 @@ use std::{thread::sleep, time::Duration};
 const TEAM_SIZE: usize = 3;
 
 struct Context {
-    rt: tokio::runtime::Runtime,
     repo: Repo,
     heroes: Vec<Unit>,
     monsters: Vec<Unit>,
@@ -86,7 +85,10 @@ struct Context {
 // Each action receives the context and returns a `Flow`.
 fn play(ctx: &Context) -> Flow {
     match play_game(ctx) {
-        Ok(()) => Flow::Continue,
+        Ok((username, waves)) => {
+            game_over(ctx, username, waves);
+            Flow::Continue
+        }
         Err(e) => {
             println!("Input error: {e}");
             Flow::Quit
@@ -94,27 +96,13 @@ fn play(ctx: &Context) -> Flow {
     }
 }
 
-fn play_game(ctx: &Context) -> std::io::Result<()> {
+fn play_game(ctx: &Context) -> std::io::Result<(String, u32)> {
     let username = utils::ask_username()?;
     let mut team = utils::pick_team(&ctx.heroes, TEAM_SIZE)?;
 
-    let mut rng = rand::rng();
     let mut waves = 0;
     loop {
-        let index = rand::Rng::random_range(&mut rng, 0..ctx.monsters.len());
-        let mut monster = ctx.monsters[index].clone();
-
-        println!("\n-------- WAVE {} --------", waves + 1);
-        println!("A wild monster appears ! --- It is {monster}");
-        utils::print_team(&team);
-        println!();
-
-        let report = game::fight_wave(&mut team, &mut monster, &mut rng);
-        for line in &report.log {
-            println!("{line}");
-        }
-
-        if report.victory {
+        if play_wave(&ctx.monsters, &mut team, waves + 1) {
             waves += 1;
             println!("Wave won ! ({waves} waves won)");
         } else {
@@ -123,17 +111,32 @@ fn play_game(ctx: &Context) -> std::io::Result<()> {
         sleep(Duration::from_millis(1000));
     }
 
-    println!("\nGAME OVER {username} ! You survived {waves} waves. (looser, HA)");
+    Ok((username, waves))
+}
+
+fn play_wave(monsters: &[Unit], team: &mut Vec<Unit>, wave_number: u32) -> bool {
+    let mut rng = rand::rng();
+    let mut monster = game::choose_random_monster(monsters, &mut rng);
+
+    utils::print_wave_info(wave_number, &monster, team);
+
+    let report = game::fight_wave(team, &mut monster, &mut rng);
+    utils::print_log(&report.log);
+    report.victory
+}
+
+// End of a game: say it, save the score, show the best scores.
+fn game_over(ctx: &Context, username: String, waves: u32) {
+    utils::print_game_over(&username, waves);
     let entry = ScoreEntry { player_name: username, waves };
-    if let Err(e) = ctx.rt.block_on(ctx.repo.save_score(&entry)) {
+    if let Err(e) = ctx.repo.save_score(&entry) {
         println!("Could not save your score: {e}");
     }
     leaderboard(ctx);
-    Ok(())
 }
 
 fn leaderboard(ctx: &Context) -> Flow {
-    match ctx.rt.block_on(ctx.repo.top_scores(3)) {
+    match ctx.repo.top_scores(3) {
         Ok(scores) => utils::print_leaderboard(&scores),
         Err(e) => println!("Could not read the scores: {e}"),
     }
@@ -152,24 +155,13 @@ const MENU: &[MenuEntry<Context>] = &[
 ];
 
 fn main() -> Result<(), Box<dyn std::error::Error>> {
-    dotenvy::dotenv().ok();
-
-    let mongo_uri = std::env::var("MONGODB_URI")?;
-    let mongo_db = std::env::var("MONGODB_DB")?;
-    println!("Config loaded (database: {mongo_db})");
-
     // Each `?` stops the program with the error message if that step fails.
-    let rt = tokio::runtime::Runtime::new()?;
-    let repo = rt.block_on(Repo::connect(&mongo_uri, &mongo_db))?;
-    let heroes = rt.block_on(repo.all_characters())?;
-    let monsters = rt.block_on(repo.all_monsters())?;
+    let repo = Repo::connect_from_env()?;
+    let heroes = repo.get_valid_characters(TEAM_SIZE)?;
+    let monsters = repo.get_valid_monsters()?;
     println!("Loaded {} heroes and {} monsters", heroes.len(), monsters.len());
 
-    if heroes.len() < TEAM_SIZE || monsters.is_empty() {
-        return Err("not enough heroes or monsters in the database".into());
-    }
-
-    let ctx = Context { rt, repo, heroes, monsters };
+    let ctx = Context { repo, heroes, monsters };
 
     loop {
         let entry = choose_menu("Clash Not Royal", MENU)?;
