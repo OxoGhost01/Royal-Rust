@@ -1,6 +1,6 @@
 use rand::Rng;
 
-use crate::models::Unit;
+use crate::models::{Effect, Unit};
 
 // What happened during one wave.
 pub struct FightReport {
@@ -15,9 +15,19 @@ pub fn fight_wave(team: &mut Vec<Unit>, monster: &mut Unit, rng: &mut impl Rng) 
     loop {
         log.push(format!("-- round {round} --"));
 
-        heroes_attack(team, monster, &mut log); 
-        if monster_is_dead(monster, &mut log) { 
+        monster.tick_effects(&mut log);
+        if monster_is_dead(monster, &mut log) {
             return FightReport { victory: true, log };
+        }
+
+        heroes_attack(team, monster, rng, &mut log);
+        if monster_is_dead(monster, &mut log) {
+            return FightReport { victory: true, log };
+        }
+
+        team_tick_effects(team, &mut log);
+        if !team_is_alive(team) {
+            return FightReport { victory: false, log };
         }
 
         monster_attack(team, monster, rng, &mut log);
@@ -29,7 +39,7 @@ pub fn fight_wave(team: &mut Vec<Unit>, monster: &mut Unit, rng: &mut impl Rng) 
     }
 }
 
-fn heroes_attack(team: &mut [Unit], monster: &mut Unit, log: &mut Vec<String>) {
+fn heroes_attack(team: &mut [Unit], monster: &mut Unit, rng: &mut impl Rng, log: &mut Vec<String>) {
     for hero in team.iter_mut() {
         if !hero.is_alive() {
             continue;
@@ -41,6 +51,7 @@ fn heroes_attack(team: &mut [Unit], monster: &mut Unit, log: &mut Vec<String>) {
         if !monster.is_alive() {
             break;
         }
+        try_apply_effect(hero, monster, rng, log);
     }
 }
 
@@ -50,6 +61,18 @@ fn monster_is_dead(monster: &Unit, log: &mut Vec<String>) -> bool {
     }
     log.push(format!("{} is dead :'(", monster.name));
     true
+}
+
+fn team_tick_effects(team: &mut [Unit], log: &mut Vec<String>) {
+    for hero in team.iter_mut() {
+        if !hero.is_alive() {
+            continue;
+        }
+        hero.tick_effects(log);
+        if !hero.is_alive() {
+            log.push(format!("{} is dead...", hero.name));
+        }
+    }
 }
 
 fn monster_attack(team: &mut [Unit], monster: &Unit, rng: &mut impl Rng, log: &mut Vec<String>) {
@@ -67,7 +90,32 @@ fn monster_attack(team: &mut [Unit], monster: &Unit, rng: &mut impl Rng, log: &m
     log.push(format!("{} hits {} for {} (hero PV: {})", monster.name, target.name, damage, target.hp));
     if !target.is_alive() {
         log.push(format!("{} is dead...", target.name));
+    } else {
+        try_apply_effect(monster, target, rng, log);
     }
+}
+
+fn try_apply_effect(attacker: &Unit, target: &mut Unit, rng: &mut impl Rng, log: &mut Vec<String>) {
+    // `let ... else` : get the effect name, or leave the function if there is none
+    let Some(effect_name) = attacker.effect_name() else {
+        return;
+    };
+    if attacker.effect_damage == 0 || attacker.effect_duration == 0 {
+        return; // an effect that does nothing is not worth adding
+    }
+    if rng.random::<f64>() >= attacker.effect_chance {
+        return;
+    }
+
+    log.push(format!(
+        "  {} inflicts {} on {} ! ({} dmg/turn for {} turns)",
+        attacker.name, effect_name, target.name, attacker.effect_damage, attacker.effect_duration
+    ));
+    target.effects.push(Effect {
+        name: effect_name.to_string(),
+        damage: attacker.effect_damage,
+        turns: attacker.effect_duration,
+    });
 }
 
 fn team_is_alive(team: &[Unit]) -> bool {
